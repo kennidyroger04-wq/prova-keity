@@ -17,14 +17,28 @@ Essa modalidade usa a publicação tradicional por branch e **não consome GitHu
 
 ## O que está incluído
 
-- **200 questões inéditas com explicação**, 100 de Língua Portuguesa e 100 de Matemática/Raciocínio Lógico.
+- **200 questões inéditas com explicação**, 100 de Língua Portuguesa e 100 de Matemática/Raciocínio Lógico. Em auditoria por ASSUNTO, 184 correspondem a tópicos documentados em provas anteriores do IGECS e 16 estão somente no edital (número relativo à classificação dos exercícios autorais, não ao número de questões históricas).
 - Português: 50 questões de compreensão de 10 textos e 50 questões de gramática.
 - Matemática: 100 questões com variações numéricas de 25 tipos de problemas.
-- Treino por disciplina e assunto, com séries de 10, 20, 40 ou todas as questões.
+- Botão **Foco IGECS** para treinar assuntos documentados; disciplina e assunto, com séries de 10, 20, 40 ou todas as questões. Inclui opção para estudar somente os assuntos com evidência histórica, ou todo o edital.
 - Simulado cronometrado: **40 questões** (20 de Português e 20 de Matemática), com **3 horas**.
 - Resultado de 0 a 100 pontos, gabarito e explicações ao final.
+- Página de **Fontes verificadas** com links para provas reais e **20 links com minutagem** para as questões 21 a 40 de Matemática de Barueri 2024 corrigidas em vídeo.
 - Revisão dos erros, favoritos, percentual de acertos e histórico do último simulado.
 - Interface para telas pequenas, botões grandes e sem cadastro ou anúncios.
+
+## Fontes históricas e critérios de inclusão
+
+A comprovação é do **tema**, não do enunciado, da dificuldade, da chance de cair nem da distribuição. Nenhuma questão do aplicativo é cópia de concurso anterior.
+
+| Fonte | Informação verificada | Uso no projeto |
+| --- | --- | --- |
+| [IGECS — Câmara de Arujá 2026, Auxiliar Administrativo](https://www.qconcursos.com/questoes-de-concursos/provas/igecs-2026-camara-de-aruja-sp-auxiliar-administrativo/questoes) | Conteúdo real de Português, Matemática e Raciocínio Lógico de nível médio: interpretação, sintaxe, morfologia, crase, regência, porcentagem, funções, geometria, análise combinatória, probabilidade, lógica e MMC | Referência para selecionar os temas do botão **Foco IGECS**. A prova de Arujá tinha cinco alternativas; a de Tapiraí prevê quatro. |
+| [IGECS — Barueri 2024, Cuidador Social](https://www.youtube.com/watch?v=QAgBEJY_jyI) | Correção documentada das 20 questões de Matemática e Lógica, com marcações de tempo para cada questão | Evidência para medidas, operações, porcentagem, juros, radiciação, funções, geometria, progressões e sequências. |
+| [IGECS — Pirapora do Bom Jesus 2026, ACS/ACE](https://www.igecs.org.br/concursos/publicacoes/MzM%3D/ODA%3D) | Mesmo organizador e cargos, mas edital diferente; nele havia conhecimentos específicos | **Não importamos Saúde Pública** para Tapiraí, pois esse conteúdo não integra o Anexo II da prova de Tapiraí. |
+| [IGECS — Perguntas frequentes](https://www.igecs.org.br/faq) | A organizadora declara que não disponibiliza provas antigas em seu site | Utilizar cadernos e correções externos com identificação verificável. |
+
+Exercícios complementares em tópicos sem ocorrência histórica verificada na amostra são rotulados como **"somente edital"** e não aparecem no modo padrão do Foco IGECS. O edital oficial continua sendo o limite máximo de conteúdo, não uma previsão de frequência.
 
 ## Importante sobre as fontes
 
