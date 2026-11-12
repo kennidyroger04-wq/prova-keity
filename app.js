@@ -100,6 +100,29 @@ function renderBiblioteca(){
  '<div class="card"><p>Você pode percorrer as <strong>100 questões de Português</strong> e as <strong>100 de Matemática e Lógica</strong>. Os enunciados são autorais; a fonte histórica comprova o tema, não o enunciado nem sua dificuldade. O progresso fica guardado no celular.</p><div class="controls">'+button("Português — 100","bibliotecaPort","primary")+button("Matemática — 100","bibliotecaMat","secondary")+'</div><p class="muted small">A ordem é sorteada para variar a prática. Respondidas até agora: '+t.feitas+'.</p>'+button("Voltar","inicio")+'</div>';
 }
 function renderFontes(){
+ const revisao=[
+ ["21","Operações e potência","00:56",56],
+ ["22","Horas e segundos","04:00",240],
+ ["23","Conversão de unidades","05:52",352],
+ ["24","Proporcionalidade","07:39",459],
+ ["25","Progressão aritmética","09:05",545],
+ ["26","Porcentagem","10:27",627],
+ ["27","Juros","11:58",718],
+ ["28","Radiciação","14:39",879],
+ ["29","Geometria analítica","17:06",1026],
+ ["30","Função quadrática","20:17",1217],
+ ["31","Ângulos de triângulo","22:38",1358],
+ ["32","Ângulos de pentágono","23:40",1420],
+ ["33","Volume de cilindro","25:52",1552],
+ ["34","Comprimento da circunferência","27:19",1639],
+ ["35","Área de figura geométrica","28:34",1714],
+ ["36","Sequência numérica","29:49",1789],
+ ["37","Sequência de letras","32:18",1938],
+ ["38","Equação","35:28",2128],
+ ["39","Problema de compras","37:02",2222],
+ ["40","Sólidos geométricos","39:01",2341]
+ ];
+
  const confirm=banco.filter(q=>q.evidencia==="tema-documentado").length,extras=banco.length-confirm;
  root.innerHTML=cabeca("Fontes históricas verificadas","Separação transparente entre questões reais, temas confirmados e material autoral.")
  +'<div class="card"><div class="grid2"><div><div class="kpi">'+confirm+'</div><div class="kpi-sub">Exercícios autorais em temas documentados</div></div><div><div class="kpi">'+extras+'</div><div class="kpi-sub">Exercícios só com base no edital</div></div></div></div>'
@@ -109,7 +132,7 @@ function renderFontes(){
  +'<div class="card"><strong>IGECS — Barueri (2024)</strong><p class="muted small">Correção das 20 questões de Matemática e Lógica de Cuidador Social; questões sobre medidas, porcentagem, juros, geometria, PA, funções e sequências.</p><a href="https://www.youtube.com/watch?v=QAgBEJY_jyI" target="_blank" rel="noopener noreferrer">Assistir correção completa ↗</a></div>'
  +'<div class="card"><strong>IGECS — ACS e ACE, Pirapora do Bom Jesus (2026)</strong><p class="muted small">Seleção confirmada da mesma banca e cargos. Diferentemente de Tapiraí, incluiu Conhecimentos Específicos, portanto as questões de saúde dessa seleção NÃO entram neste banco.</p><a href="https://www.igecs.org.br/concursos/publicacoes/MzM%3D/ODA%3D" target="_blank" rel="noopener noreferrer">Ver página oficial ↗</a></div>'
  +'<div class="card"><strong>Tapiraí — edital PSPMT 003/2026</strong><p class="muted small">Anexo II, páginas 27–28: 20 Português e 20 Matemática/Raciocínio Lógico. É essa distribuição que rege nossos simulados; conferir eventuais retificações.</p><a href="https://www.igecs.org.br/" target="_blank" rel="noopener noreferrer">Consultar banca ↗</a></div>'
- +'</div><div class="controls">'+button("Treinar os temas documentados","foco","primary")+button("Voltar","inicio")+'</div>';
+ +'</div><details class="card" style="margin-top:14px"><summary style="cursor:pointer;font-weight:750">▶ Abrir as 20 questões reais de Barueri 2024, corrigidas em vídeo</summary><p class="muted small">Cada link abre o vídeo exatamente no momento da questão original correspondente.</p><div class="stack">'+revisao.map(v=>'<a style="padding:8px 0;border-bottom:1px solid #edf1f6" href="https://www.youtube.com/watch?v=QAgBEJY_jyI&t='+v[3]+'s" target="_blank" rel="noopener noreferrer">Questão '+v[0]+' · '+h(v[1])+' ('+v[2]+') ↗</a>').join('')+'</div></details><div class="controls">'+button("Treinar os temas documentados","foco","primary")+button("Voltar","inicio")+'</div>';
 }
 function render(){
  if(!banco.length){root.innerHTML='<div class="card"><h2>Erro ao carregar questões</h2><p>Verifique a conexão e atualize a página. Se persistir, informe o mantenedor.</p></div>';return;}
