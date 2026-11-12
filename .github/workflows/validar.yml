@@ -1,4 +1,5 @@
 name: Prova Keity - Validacao manual
+# Revisão final: links e fontes históricas 12-11-2026
 on:
   push:
     paths:
