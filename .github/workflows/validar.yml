@@ -1,0 +1,70 @@
+name: Prova Keity - Validacao manual
+on:
+  push:
+    paths:
+      - ".github/workflows/validar.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  validar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - uses: actions/checkout@v4
+      - name: Conferir sintaxe e integridade do banco
+        run: |
+          node --check app.js
+          node --check questoes.js
+          node - <<'NODE'
+          global.window=global;
+          require('./questoes.js');
+          const b=global.BANCO_QUESTOES;
+          const ok=(c,m)=>{if(!c)throw Error(m)};
+          ok(Array.isArray(b)&&b.length===200,"Banco deveria ter 200 questões");
+          for(const area of ["Português","Matemática"])ok(b.filter(q=>q.area===area).length===100,"Deveria ter 100 de "+area);
+          ok(new Set(b.map(q=>q.id)).size===200,"IDs duplicados");
+          ok(new Set(b.map(q=>q.tema+"|"+q.enunciado+"|"+q.texto)).size===200,"Questões duplicadas");
+          for(const q of b){
+            ok(q.alternativas.length===4&&new Set(q.alternativas).size===4,"Alternativas incorretas "+q.id);
+            ok(Number.isInteger(q.correta)&&q.correta>=0&&q.correta<=3,"Gabarito inválido "+q.id);
+            ok(!!q.explicacao&&!!q.enunciado,"Texto vazio "+q.id);
+            ok(q.origem.includes("autoral"),"Questão com origem falsa "+q.id);
+            ok(["tema-documentado","somente-edital"].includes(q.evidencia),"Evidência inválida "+q.id);
+            if(q.evidencia==="tema-documentado")ok(q.referencia.startsWith("https://"),"Referência ausente "+q.id);
+          }
+          const foco=b.filter(q=>q.evidencia==="tema-documentado");
+          ok(foco.filter(q=>q.area==="Português").length>=20,"Foco Português insuficiente");
+          ok(foco.filter(q=>q.area==="Matemática").length>=20,"Foco Matemática insuficiente");
+          console.log("BANCO OK:",b.length,"P=100 M=100; temas documentados:",foco.length,"só edital:",b.length-foco.length);
+          NODE
+      - name: Teste do aplicativo sem navegador gráfico
+        run: |
+          node - <<'NODE'
+          const assert=require('node:assert/strict');
+          const callbacks={};
+          const app={innerHTML:'',addEventListener:(n,fn)=>callbacks.app=fn};
+          const home={addEventListener:()=>{}};
+          global.window=global;
+          global.localStorage={getItem:()=>null,setItem:()=>{}};
+          global.document={getElementById:(id)=>id==='app'?app:id==='homeBtn'?home:{value:''}};
+          global.scrollTo=()=>{};
+          global.confirm=()=>true;
+          global.setInterval=()=>0;
+          require('./questoes.js');
+          require('./app.js');
+          assert.match(app.innerHTML,/Estude o que importa/);
+          const click=(action)=>callbacks.app({target:{closest:()=>({dataset:{action}})}});
+          click('fontes');
+          assert.match(app.innerHTML,/Fontes históricas verificadas/);
+          assert.match(app.innerHTML,/Nenhuma das 200 questões foi copiada/);
+          click('inicio');
+          click('foco');
+          assert.match(app.innerHTML,/Questão 1 de 40/);
+          assert.match(app.innerHTML,/Assunto comprovado/);
+          click('inicio');
+          click('simulado');
+          assert.match(app.innerHTML,/Questão 1 de 40/);
+          assert.match(app.innerHTML,/Tempo/);
+          console.log('INTERFACE OK: início, fontes, treino foco IGECS e simulado.');
+          NODE
