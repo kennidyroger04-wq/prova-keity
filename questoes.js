@@ -163,11 +163,31 @@ for(const [b,h] of [[10,6],[12,8],[15,4],[18,7]])M("Geometria plana","Um triâng
 for(const [a,b,c] of [[2,3,4],[4,5,3],[3,6,5],[2,7,8]])M("Geometria espacial","Uma caixa retangular mede "+a+" cm × "+b+" cm × "+c+" cm. Qual é o volume?",a*b*c,"Multiplique comprimento × largura × altura.","cm³");
 for(const [a,b,c] of [[3,4,5],[5,12,13],[8,15,17],[7,24,25]])M("Geometria plana","Um triângulo retângulo tem catetos "+a+" cm e "+b+" cm. Qual é a hipotenusa?",c,"Teorema de Pitágoras: h² = "+a+"² + "+b+"².","cm");
 for(const xs of [[5,7,9],[8,10,12],[6,8,10,12],[12,14,16,18]])M("Estatística","Qual é a média aritmética de "+xs.join(", ")+"?",xs.reduce((a,b)=>a+b,0)/xs.length,"Some os valores e divida pela quantidade de números.","");
-for(const [a,b] of [[4,6],[3,7],[2,8],[7,3]])M("Probabilidade","Uma urna contém "+a+" bolas azuis e "+b+" vermelhas. Qual é a probabilidade percentual de retirar uma azul em um sorteio?",100*a/(a+b),"Probabilidade = quantidade de azuis ÷ total × 100.","%");
-for(const [a,b] of [[3,4],[2,5],[4,6],[5,3]])M("Análise combinatória","Uma pessoa tem "+a+" camisetas e "+b+" calças. Quantas combinações diferentes de uma camiseta e uma calça são possíveis?",a*b,"Pelo princípio multiplicativo, multiplique as opções de camiseta pelas de calça.","combinações");
-for(const [a,d] of [[2,3],[4,5],[7,2],[10,4]])M("Raciocínio lógico","Complete a sequência: "+[a,a+d,a+2*d,a+3*d].join(", ")+", __.",a+4*d,"É uma sequência de razão constante "+d+": some "+d+" ao último termo.","");
-for(const [x,y] of [[5,3],[7,2],[9,4],[10,6]])M("Sistemas lineares","Se x + y = "+(x+y)+" e x - y = "+(x-y)+", qual é o valor de x?",x,"Some as equações: 2x = "+(2*x)+". Então x = "+x+".","");
+for(const [mat,port,nenhum] of [[65,55,20],[70,50,10],[60,45,15],[75,55,20]])M("Probabilidade","Em uma turma, "+mat+"% estudam Matemática, "+port+"% estudam Português e "+nenhum+"% não estudam nenhuma dessas matérias. Qual percentual estuda AMBAS?",mat+port+nenhum-100,"Pela inclusão-exclusão: ambas = "+mat+"% + "+port+"% - (100% - "+nenhum+"%) = "+(mat+port+nenhum-100)+"%.","%");
+for(const [n,k] of [[6,2],[7,3],[8,2],[9,3]]){let resposta=1;for(let i=0;i<k;i++)resposta*=n-i;M("Análise combinatória","Uma equipe possui "+n+" participantes. Serão escolhidas "+k+" pessoas para apresentar, em ordem definida e sem repetição. De quantas maneiras diferentes isso pode ocorrer?",resposta,"Como a ordem importa, multiplique "+Array.from({length:k},(_,i)=>n-i).join(" × ")+" = "+resposta+".","maneiras");}
+for(const [inicio,pulo1,pulo2] of [[4,3,6],[2,4,7],[5,2,5],[7,5,8]]){const seq=[inicio];for(let i=0;i<6;i++)seq.push(seq.at(-1)+(i%2===0?pulo1:pulo2));M("Raciocínio lógico","Na sequência "+seq.join(", ")+", __, as diferenças alternam entre dois valores. Qual é o próximo termo?",seq.at(-1)+pulo1,"As diferenças alternam +"+pulo1+" e +"+pulo2+". Após o último termo, soma-se "+pulo1+".","");}
+for(const [a,b] of [[12,18],[8,12],[6,15],[9,12]]){const mdc=(x,y)=>y?mdc(y,x%y):x;const mmc=a*b/mdc(a,b);M("MMC e problemas","Dois sensores emitem sinais a cada "+a+" e "+b+" minutos. Se começaram juntos, após quantos minutos voltarão a emitir juntos pela primeira vez?",mmc,"Calcule o mínimo múltiplo comum de "+a+" e "+b+": "+mmc+".","min");}
 if(banco.length!==200||banco.filter(x=>x.area==="Português").length!==100||banco.filter(x=>x.area==="Matemática").length!==100)throw Error("Contagem incorreta: "+banco.length+"; P="+banco.filter(x=>x.area==="Português").length);
 if(new Set(banco.map(x=>x.id)).size!==200||new Set(banco.map(x=>x.enunciado+"|"+x.texto+"|"+x.tema)).size!==200)throw Error("IDs ou enunciados duplicados.");
+
+/* Auditoria editorial: prova passada confirma TEMA, nunca a autoria ou igualdade da questão.
+   Referência A: 2026, Câmara de Arujá, Auxiliar Administrativo (IGECS) - questões catalogadas.
+   Referência B: 2024, Barueri, Cuidador Social (IGECS) - resolução das 20 de Matemática.
+   A mesma banca cobra Conhecimentos Específicos em outros editais de ACS, MAS NÃO no edital Tapiraí PSPMT 003/2026. */
+const REF_P="https://www.qconcursos.com/questoes-de-concursos/provas/igecs-2026-camara-de-aruja-sp-auxiliar-administrativo/questoes";
+const REF_M24="https://www.youtube.com/watch?v=QAgBEJY_jyI";
+const REF_M26="https://www.qconcursos.com/questoes-de-concursos/provas/igecs-2026-camara-de-aruja-sp-auxiliar-administrativo/questoes";
+const confirmadosP=new Set(["Interpretação de texto","Crase","Concordância verbal","Concordância nominal","Ortografia e acentuação","Classes de palavras","Regência","Sintaxe","Formação, pronomes e porquês"]);
+const confirmadosM=new Set(["Porcentagem","Regra de três","Juros","Frações","Operações","Medidas","Equações","Funções","Progressões","Geometria plana","Geometria espacial","Probabilidade","Análise combinatória","Raciocínio lógico","MMC e problemas"]);
+for(const q of banco){
+  q.origem="Questão autoral de treinamento — não aplicada pelo IGECS";
+  const confirmado=q.area==="Português"?confirmadosP.has(q.tema):confirmadosM.has(q.tema);
+  // Em Português, a confirmação de "formação/pronomes" não prova que 'porquês' ou 'aonde' foram cobrados.
+  const excecao=q.tema==="Formação, pronomes e porquês" && (/porqu|Aonde|aonde/.test(q.enunciado)||/porqu/.test(q.alternativas.join(" ")));
+  q.evidencia=confirmado&&!excecao?"tema-documentado":"somente-edital";
+  q.referencia=q.evidencia==="tema-documentado"?(q.area==="Português"?REF_P:(["Juros","Medidas","Progressões","Geometria espacial"].includes(q.tema)?REF_M24:REF_M26)):"";
+  q.observacao=q.evidencia==="tema-documentado"?"Assunto observado em prova anterior, mas esta questão é inédita e pode ser mais simples que a prova.":"Previsto no edital de Tapiraí, porém sem ocorrência histórica conferida nas amostras pesquisadas.";
+}
+
 window.BANCO_QUESTOES=Object.freeze(banco);
 })();
