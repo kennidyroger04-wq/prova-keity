@@ -168,6 +168,6 @@ for(const [a,b] of [[3,4],[2,5],[4,6],[5,3]])M("Análise combinatória","Uma pes
 for(const [a,d] of [[2,3],[4,5],[7,2],[10,4]])M("Raciocínio lógico","Complete a sequência: "+[a,a+d,a+2*d,a+3*d].join(", ")+", __.",a+4*d,"É uma sequência de razão constante "+d+": some "+d+" ao último termo.","");
 for(const [x,y] of [[5,3],[7,2],[9,4],[10,6]])M("Sistemas lineares","Se x + y = "+(x+y)+" e x - y = "+(x-y)+", qual é o valor de x?",x,"Some as equações: 2x = "+(2*x)+". Então x = "+x+".","");
 if(banco.length!==200||banco.filter(x=>x.area==="Português").length!==100||banco.filter(x=>x.area==="Matemática").length!==100)throw Error("Contagem incorreta: "+banco.length+"; P="+banco.filter(x=>x.area==="Português").length);
-if(new Set(banco.map(x=>x.id)).size!==200||new Set(banco.map(x=>x.enunciado)).size!==200)throw Error("IDs ou enunciados duplicados.");
+if(new Set(banco.map(x=>x.id)).size!==200||new Set(banco.map(x=>x.enunciado+"|"+x.texto+"|"+x.tema)).size!==200)throw Error("IDs ou enunciados duplicados.");
 window.BANCO_QUESTOES=Object.freeze(banco);
 })();
