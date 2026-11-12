@@ -22,26 +22,27 @@ function miniCard(ico,title,sub,acao){return '<button class="card action" data-a
 function voltar(){tela="inicio";sessao=null;resultado=null;render();}
 function renderInicio(){
 const s=stats(),pct=Math.round(s.feitas/banco.length*100),taxa=s.feitas?Math.round(s.certas/s.feitas*100):0;
-root.innerHTML='<div class="hero"><span class="eyebrow">Sua preparação começa aqui</span><h1>Rumo à sua aprovação.</h1><p>Questões inéditas com explicação, treino por assunto e simulado no formato do edital de Tapiraí.</p><div class="hero-stat"><div><strong>100</strong><br><span>Português</span></div><div><strong>100</strong><br><span>Matemática e Lógica</span></div><div><strong>40</strong><br><span>questões no simulado</span></div></div></div>'
+root.innerHTML='<div class="hero"><span class="eyebrow">Sua preparação começa aqui</span><h1>Estude o que importa.</h1><p>200 exercícios autorais, com os assuntos conferidos em provas anteriores e links para questões reais da banca.</p><div class="hero-stat"><div><strong>100</strong><br><span>Português</span></div><div><strong>100</strong><br><span>Matemática e Lógica</span></div><div><strong>40</strong><br><span>questões no simulado</span></div></div></div>'
 +cabeca("Escolha como estudar")
-+'<div class="grid2">'+miniCard("📖","Português","Interpretação, gramática e redação.","setupPort")+miniCard("🔢","Matemática e Lógica","Contas, geometria, funções e problemas.","setupMat")+miniCard("⏱️","Simulado de prova","40 questões: 20 de cada disciplina.","simulado")+miniCard("🔁","Revisar erros","Repetir o que você errou.","erros")+'</div>'
++'<div class="grid2">'+miniCard("📖","Português","Interpretação, gramática e sintaxe.","setupPort")+miniCard("🔢","Matemática e Lógica","Contas, geometria, funções e problemas.","setupMat")+miniCard("⏱️","Simulado de prova","40 questões: 20 de cada disciplina.","simulado")+miniCard("🔁","Revisar erros","Repetir o que você errou.","erros")+'</div>'
++'<div class="stack" style="margin-top:12px">'+button("🎯 Treino Foco IGECS — 40 questões","foco","primary")+button("🔎 Ver provas reais e fontes verificadas","fontes","secondary")+'</div>'
 +cabeca("Seu progresso")
 +'<div class="card"><div class="summary-row"><span>Questões já respondidas</span><strong>'+s.feitas+' / '+banco.length+'</strong></div><div class="bar"><span style="width:'+pct+'%"></span></div><div class="grid2"><div><div class="kpi">'+taxa+'%</div><div class="kpi-sub">acerto nas últimas respostas</div></div><div><div class="kpi">'+s.erradas+'</div><div class="kpi-sub">questões para revisar</div></div></div></div>'
 +cabeca("Mais opções")
 +'<div class="stack">'+button("Explorar as 200 questões","biblioteca","secondary")+button("Estudar favoritas ("+store.favoritos.length+")","favoritas")+button("Ver último simulado","ultimo","")+'</div>'
-+'<p class="note" style="margin-top:16px">Seu progresso é salvo somente neste navegador. Se trocar de celular ou limpar os dados do navegador, o histórico não será transferido. Nenhum cadastro é necessário.</p>';
++'<p class="note" style="margin-top:16px">As 200 questões são inéditas. A etiqueta “tema documentado” significa apenas que o assunto apareceu em prova da banca; não é uma questão oficial. O progresso fica salvo neste navegador.</p>';
 }
 function renderSetup(){
 const temaList=[...new Set(banco.filter(q=>q.area===tipoSetup).map(q=>q.tema))].sort((a,b)=>a.localeCompare(b,"pt-BR"));
 root.innerHTML=cabeca(tipoSetup==="Português"?"Treinar Português":"Treinar Matemática e Lógica","Escolha um assunto ou estude uma seleção variada de questões.")
-+'<div class="card"><div class="selectrow"><div><label for="tema">Assunto</label><select id="tema"><option value="">Todos os assuntos</option>'+temaList.map(t=>'<option value="'+h(t)+'">'+h(t)+'</option>').join("")+'</select></div><div><label for="quant">Número de questões</label><select id="quant"><option value="10">10 questões</option><option value="20" selected>20 questões</option><option value="40">40 questões</option><option value="0">Todas as disponíveis</option></select></div></div><div class="controls">'+button("Iniciar treinamento","iniciar","primary")+button("Voltar ao início","inicio")+'</div></div>'
-+'<p class="note" style="margin-top:12px">No treino, você vê a explicação logo após responder. O sistema sorteia questões do assunto escolhido. Para percorrer o banco completo, use “Explorar as 200 questões” na tela inicial.</p>';
++'<div class="card"><div class="selectrow"><div><label for="tema">Assunto</label><select id="tema"><option value="">Todos os assuntos</option>'+temaList.map(t=>'<option value="'+h(t)+'">'+h(t)+'</option>').join("")+'</select></div><div><label for="quant">Número de questões</label><select id="quant"><option value="10">10 questões</option><option value="20" selected>20 questões</option><option value="40">40 questões</option><option value="0">Todas as disponíveis</option></select></div></div><div style="margin-top:14px"><label for="filtro">Base dos assuntos</label><select id="filtro"><option value="confirmados" selected>Priorizar assuntos já cobrados pelo IGECS</option><option value="todos">Todos os assuntos do edital</option></select></div><div class="controls">'+button("Iniciar treinamento","iniciar","primary")+button("Voltar ao início","inicio")+'</div></div>'
++'<p class="note" style="margin-top:12px">As perguntas do aplicativo são autorais. Veja a marcação de evidência e o link para a prova histórica correspondente a cada assunto. Assuntos menos documentados ficam disponíveis no modo “Todos”.</p>';
 }
 function iniciaTreino(lista,nome,limite){if(!lista.length){root.innerHTML='<div class="card"><h2>Sem questões disponíveis</h2><p class="muted">Responda algumas perguntas primeiro ou escolha outro assunto.</p>'+button("Voltar","inicio","primary")+'</div>';return;}
   const ids=shuffle(list(lista)).slice(0,limite&&limite>0?limite:lista.length);sessao={tipo:"treino",nome,ids,pos:0,respostas:{},iniciada:Date.now()};tela="questao";render();
 }
 function iniciaSimulado(){
-  const p=shuffle(banco.filter(q=>q.area==="Português")).slice(0,20),m=shuffle(banco.filter(q=>q.area==="Matemática")).slice(0,20);
+  const p=shuffle(banco.filter(q=>q.area==="Português"&&q.evidencia==="tema-documentado")).slice(0,20),m=shuffle(banco.filter(q=>q.area==="Matemática"&&q.evidencia==="tema-documentado")).slice(0,20);
   sessao={tipo:"simulado",nome:"Simulado completo",ids:shuffle(list(p.concat(m))),pos:0,respostas:{},iniciada:Date.now(),duracao:180*60*1000};tela="questao";render();
 }
 function ordem(){return sessao&&sessao.ids?sessao.ids.map(id=>byId(id)).filter(Boolean):[];}
@@ -56,6 +57,7 @@ function renderQuestao(){
     return '<button class="option '+cls+'" data-action="escolher" data-choice="'+i+'" '+(!isExam&&has?"disabled":"")+' aria-pressed="'+(selected?"true":"false")+'"><span class="letter">'+["A","B","C","D"][i]+'</span><span>'+h(a)+'</span></button>';}).join("");
   root.innerHTML='<div class="quiz-head"><div><span class="pill">'+h(q.area)+'</span> <small>'+h(q.tema)+'</small></div><small>'+(isExam?'Tempo <strong id="cronometro">'+tempo()+'</strong>':'Treino comentado')+'</small></div>'
   +'<div class="bar"><span style="width:'+progress+'%"></span></div>'
+  +'<div class="note" style="margin:8px 0 12px">'+(q.evidencia==="tema-documentado"?"✓ Assunto comprovado em prova anterior do IGECS; exercício autoral.":"⚠ Assunto previsto no edital, sem confirmação nesta amostra histórica; exercício autoral.")+'</div>'
   +'<div class="row between"><span class="meta">Questão '+(sessao.pos+1)+' de '+sessao.ids.length+' · '+h(q.id)+'</span><span class="meta">'+Object.keys(sessao.respostas).length+' respondidas</span></div>'
   +'<div class="card" style="margin-top:12px">'+(q.texto?'<div class="passage">'+h(q.texto)+'</div>':"")
   +'<div class="question">'+h(q.enunciado)+'</div><div class="options">'+op+'</div>'
@@ -63,6 +65,7 @@ function renderQuestao(){
   +'<div class="controls">'+button(fav?"★ Favorita":"☆ Favoritar","favoritar","")+button("← Anterior","anterior","",sessao.pos===0?"disabled":"")+
   button(sessao.pos===sessao.ids.length-1?(isExam?"Entregar simulado":"Ver resultado"):"Próxima →","proxima","primary")+'</div>'
   +(isExam?'<p class="muted small">O gabarito e as explicações aparecem apenas depois de entregar o simulado.</p>':'<p class="muted small">No treino, selecione uma resposta para receber a explicação; depois avance.</p>')
+  +(q.referencia?'<p class="meta">Referência sobre o assunto: <a href="'+h(q.referencia)+'" rel="noopener noreferrer" target="_blank">consultar prova histórica ou correção em vídeo ↗</a>. A questão acima não foi retirada dessa fonte.</p>':'')
   +'</div><div class="controls">'+button("Sair para o início","inicio","ghost")+'</div>';
 }
 function marcaResposta(n){
@@ -93,8 +96,20 @@ function renderResultado(){
  root.innerHTML=out;
 }
 function renderBiblioteca(){
- const t=stats();root.innerHTML=cabeca("Banco completo","200 questões de estudo, sem cobrança de conhecimentos específicos.")+
- '<div class="card"><p>Você pode percorrer as <strong>100 questões de Português</strong> e as <strong>100 de Matemática e Lógica</strong>. O progresso fica guardado no celular.</p><div class="controls">'+button("Português — 100","bibliotecaPort","primary")+button("Matemática — 100","bibliotecaMat","secondary")+'</div><p class="muted small">A ordem é sorteada para variar a prática. Respondidas até agora: '+t.feitas+'.</p>'+button("Voltar","inicio")+'</div>';
+ const t=stats();root.innerHTML=cabeca("Banco completo","200 exercícios inéditos, organizados por evidência histórica. A prova de Tapiraí não prevê Conhecimentos Específicos.")+
+ '<div class="card"><p>Você pode percorrer as <strong>100 questões de Português</strong> e as <strong>100 de Matemática e Lógica</strong>. Os enunciados são autorais; a fonte histórica comprova o tema, não o enunciado nem sua dificuldade. O progresso fica guardado no celular.</p><div class="controls">'+button("Português — 100","bibliotecaPort","primary")+button("Matemática — 100","bibliotecaMat","secondary")+'</div><p class="muted small">A ordem é sorteada para variar a prática. Respondidas até agora: '+t.feitas+'.</p>'+button("Voltar","inicio")+'</div>';
+}
+function renderFontes(){
+ const confirm=banco.filter(q=>q.evidencia==="tema-documentado").length,extras=banco.length-confirm;
+ root.innerHTML=cabeca("Fontes históricas verificadas","Separação transparente entre questões reais, temas confirmados e material autoral.")
+ +'<div class="card"><div class="grid2"><div><div class="kpi">'+confirm+'</div><div class="kpi-sub">Exercícios autorais em temas documentados</div></div><div><div class="kpi">'+extras+'</div><div class="kpi-sub">Exercícios só com base no edital</div></div></div></div>'
+ +'<p class="note" style="margin-top:12px"><strong>Nenhuma das 200 questões foi copiada de um concurso.</strong> Elas são de treinamento. Para resolver as originais da banca, abra os links históricos abaixo. A comprovação refere-se ao TEMA, não à equivalência de dificuldade, redação ou percentual futuro de cobrança.</p>'
+ +'<div class="stack" style="margin-top:14px">'
+ +'<div class="card"><strong>IGECS — Câmara de Arujá (2026)</strong><p class="muted small">Questões reais de Português, Matemática e Lógica catalogadas para Auxiliar Administrativo: interpretação, sintaxe, crase, regência, morfologia, porcentagem, geometria, combinatória, probabilidade, funções, MMC e sequências. Prova antiga com 5 alternativas; Tapiraí terá 4.</p><a href="https://www.qconcursos.com/questoes-de-concursos/provas/igecs-2026-camara-de-aruja-sp-auxiliar-administrativo/questoes" target="_blank" rel="noopener noreferrer">Resolver questões originais ↗</a></div>'
+ +'<div class="card"><strong>IGECS — Barueri (2024)</strong><p class="muted small">Correção das 20 questões de Matemática e Lógica de Cuidador Social; questões sobre medidas, porcentagem, juros, geometria, PA, funções e sequências.</p><a href="https://www.youtube.com/watch?v=QAgBEJY_jyI" target="_blank" rel="noopener noreferrer">Assistir correção completa ↗</a></div>'
+ +'<div class="card"><strong>IGECS — ACS e ACE, Pirapora do Bom Jesus (2026)</strong><p class="muted small">Seleção confirmada da mesma banca e cargos. Diferentemente de Tapiraí, incluiu Conhecimentos Específicos, portanto as questões de saúde dessa seleção NÃO entram neste banco.</p><a href="https://www.igecs.org.br/concursos/publicacoes/MzM%3D/ODA%3D" target="_blank" rel="noopener noreferrer">Ver página oficial ↗</a></div>'
+ +'<div class="card"><strong>Tapiraí — edital PSPMT 003/2026</strong><p class="muted small">Anexo II, páginas 27–28: 20 Português e 20 Matemática/Raciocínio Lógico. É essa distribuição que rege nossos simulados; conferir eventuais retificações.</p><a href="https://www.igecs.org.br/" target="_blank" rel="noopener noreferrer">Consultar banca ↗</a></div>'
+ +'</div><div class="controls">'+button("Treinar os temas documentados","foco","primary")+button("Voltar","inicio")+'</div>';
 }
 function render(){
  if(!banco.length){root.innerHTML='<div class="card"><h2>Erro ao carregar questões</h2><p>Verifique a conexão e atualize a página. Se persistir, informe o mantenedor.</p></div>';return;}
@@ -103,14 +118,17 @@ function render(){
  else if(tela==="questao")renderQuestao();
  else if(tela==="resultado")renderResultado();
  else if(tela==="biblioteca")renderBiblioteca();
+ else if(tela==="fontes")renderFontes();
 }
 root.addEventListener("click",function(ev){
  const el=ev.target.closest("button[data-action]");if(!el||el.disabled)return;
  const action=el.dataset.action;
  if(action==="inicio"){voltar();return;}
  if(action==="setupPort"||action==="setupMat"){tipoSetup=action==="setupPort"?"Português":"Matemática";tela="setup";render();}
- else if(action==="iniciar"){const tema=document.getElementById("tema").value,lim=Number(document.getElementById("quant").value);iniciaTreino(banco.filter(q=>q.area===tipoSetup&&(!tema||q.tema===tema)),tipoSetup,lim);}
+ else if(action==="iniciar"){const tema=document.getElementById("tema").value,lim=Number(document.getElementById("quant").value);const filtro=document.getElementById("filtro").value;iniciaTreino(banco.filter(q=>q.area===tipoSetup&&(!tema||q.tema===tema)&&(filtro==="todos"||q.evidencia==="tema-documentado")),tipoSetup,lim);}
  else if(action==="simulado"){iniciaSimulado();}
+ else if(action==="foco"){const p=shuffle(banco.filter(q=>q.area==="Português"&&q.evidencia==="tema-documentado")).slice(0,20);const m=shuffle(banco.filter(q=>q.area==="Matemática"&&q.evidencia==="tema-documentado")).slice(0,20);iniciaTreino(p.concat(m),"Foco IGECS",40);}
+ else if(action==="fontes"){tela="fontes";render();}
  else if(action==="biblioteca"){tela="biblioteca";render();}
  else if(action==="bibliotecaPort"||action==="bibliotecaMat"){const a=action==="bibliotecaPort"?"Português":"Matemática";iniciaTreino(banco.filter(q=>q.area===a),a,0);}
  else if(action==="escolher"){marcaResposta(Number(el.dataset.choice));}
